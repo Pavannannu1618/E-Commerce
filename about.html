@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — AURA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #F5F0E8;
+    --warm: #E8DDD0;
+    --sand: #C9B99A;
+    --earth: #8B7355;
+    --dark: #1C1917;
+    --charcoal: #2C2825;
+    --accent: #C4622D;
+    --gold: #BFA07A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  /* Cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--accent); border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--accent); border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--warm); }
+  ::-webkit-scrollbar-thumb { background: var(--sand); }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 28px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    z-index: 100;
+    transition: background 0.4s, padding 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(245, 240, 232, 0.92);
+    backdrop-filter: blur(16px);
+    padding: 18px 60px;
+    border-bottom: 1px solid rgba(201,185,154,0.3);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 400;
+    letter-spacing: 6px; color: var(--dark);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--charcoal);
+    text-decoration: none; font-weight: 400;
+    position: relative; transition: color 0.3s;
+  }
+  .nav-links a.active { color: var(--accent); }
+  .nav-links a::after {
+    content: ''; position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 1px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+  .cart-btn {
+    background: var(--dark); color: var(--cream);
+    border: none; padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase; cursor: none;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .cart-btn:hover { background: var(--accent); transform: translateY(-1px); }
+
+  /* Hero */
+  .about-hero {
+    min-height: 100vh;
+    background: var(--dark);
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 80px 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&q=70');
+    background-size: cover; background-position: center;
+    opacity: 0.25;
+    transform: scale(1.05);
+    animation: slowZoom 20s ease-in-out infinite alternate;
+  }
+  @keyframes slowZoom {
+    from { transform: scale(1.05); }
+    to { transform: scale(1.12); }
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, var(--dark) 30%, transparent 80%);
+  }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-eyebrow {
+    font-size: 10px; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 28px;
+    opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+  }
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(60px, 8vw, 120px);
+    font-weight: 300; color: var(--cream);
+    line-height: 0.95;
+    opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+  }
+  .hero-headline em {
+    font-style: italic; color: var(--gold);
+    display: block;
+  }
+  .hero-sub {
+    font-size: 15px; line-height: 1.8;
+    color: rgba(245,240,232,0.55);
+    max-width: 480px; margin-top: 36px;
+    font-weight: 300;
+    opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-scroll-hint {
+    position: absolute; right: 80px; bottom: 100px;
+    display: flex; align-items: center; gap: 16px;
+    color: rgba(245,240,232,0.3);
+    font-size: 10px; letter-spacing: 3px;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    animation: fadeIn 1s 1s forwards; opacity: 0;
+  }
+  .hero-scroll-hint::before {
+    content: '';
+    width: 1px; height: 60px;
+    background: rgba(245,240,232,0.2);
+    display: block;
+  }
+
+  /* Marquee strip */
+  .marquee-strip {
+    background: var(--accent);
+    padding: 18px 0; overflow: hidden;
+  }
+  .marquee-track {
+    display: flex; gap: 0;
+    animation: marquee 20s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-style: italic;
+    color: rgba(255,255,255,0.85);
+    padding: 0 40px;
+    white-space: nowrap;
+  }
+  .marquee-dot {
+    color: rgba(255,255,255,0.4);
+    padding: 0;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* Story */
+  .story {
+    padding: 140px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 120px;
+    align-items: center;
+  }
+  .story-visual {
+    position: relative;
+  }
+  .story-img-main {
+    width: 100%; aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+  }
+  .story-img-accent {
+    position: absolute;
+    width: 55%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    bottom: -48px; right: -48px;
+    border: 8px solid var(--cream);
+  }
+  .story-year-tag {
+    position: absolute;
+    top: 32px; left: -32px;
+    background: var(--accent);
+    color: white;
+    padding: 20px 28px;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .story-year-tag span:first-child {
+    font-size: 40px; font-weight: 300;
+    display: block; line-height: 1;
+  }
+  .story-year-tag span:last-child {
+    font-size: 10px; letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .story-tag {
+    font-size: 10px; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--earth);
+    margin-bottom: 20px; display: block;
+  }
+  .story-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 3.5vw, 54px);
+    font-weight: 300; color: var(--dark);
+    line-height: 1.1; margin-bottom: 36px;
+  }
+  .story-title em { font-style: italic; color: var(--accent); }
+  .story-body p {
+    font-size: 15px; line-height: 1.9;
+    color: var(--earth); font-weight: 300;
+    margin-bottom: 20px;
+  }
+  .story-body p:last-child { margin-bottom: 0; }
+  .story-signature {
+    margin-top: 48px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-style: italic;
+    color: var(--dark);
+  }
+  .story-signature small {
+    display: block; font-family: 'DM Sans', sans-serif;
+    font-size: 11px; font-style: normal;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--earth); margin-top: 6px;
+  }
+
+  /* Values */
+  .values {
+    background: var(--dark);
+    padding: 120px 80px;
+  }
+  .values-header {
+    text-align: center; margin-bottom: 80px;
+  }
+  .values-tag {
+    font-size: 10px; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 20px; display: block;
+  }
+  .values-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 4vw, 64px);
+    font-weight: 300; color: var(--cream);
+    line-height: 1.05;
+  }
+  .values-title em { font-style: italic; color: var(--gold); }
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .value-card {
+    background: var(--charcoal);
+    padding: 56px 48px;
+    position: relative; overflow: hidden;
+    transition: background 0.4s;
+  }
+  .value-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--accent);
+    transition: height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .value-card:hover { background: #201e1b; }
+  .value-card:hover::before { height: 100%; }
+  .value-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px; font-weight: 300;
+    color: rgba(245,240,232,0.06);
+    line-height: 1; margin-bottom: 32px;
+    transition: color 0.4s;
+  }
+  .value-card:hover .value-number { color: rgba(196,98,45,0.12); }
+  .value-icon {
+    font-size: 28px; margin-bottom: 20px;
+    display: block;
+  }
+  .value-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 400;
+    color: var(--cream); margin-bottom: 16px;
+  }
+  .value-desc {
+    font-size: 13px; line-height: 1.8;
+    color: rgba(245,240,232,0.45);
+    font-weight: 300;
+  }
+
+  /* Timeline */
+  .timeline {
+    padding: 120px 80px;
+    background: var(--warm);
+  }
+  .timeline-header { margin-bottom: 80px; }
+  .timeline-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 4vw, 60px);
+    font-weight: 300; color: var(--dark);
+    line-height: 1.1;
+  }
+  .timeline-title em { font-style: italic; color: var(--accent); }
+  .timeline-items {
+    position: relative;
+    padding-left: 80px;
+  }
+  .timeline-items::before {
+    content: '';
+    position: absolute; left: 20px; top: 10px;
+    width: 1px; bottom: 10px;
+    background: var(--sand);
+  }
+  .timeline-item {
+    position: relative; margin-bottom: 72px;
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-dot {
+    position: absolute; left: -68px; top: 8px;
+    width: 16px; height: 16px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    background: var(--warm);
+    transition: background 0.3s;
+  }
+  .timeline-item:hover .timeline-dot { background: var(--accent); }
+  .timeline-year {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px; font-weight: 600;
+    color: var(--accent); letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .timeline-event {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 400;
+    color: var(--dark); margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .timeline-detail {
+    font-size: 13px; line-height: 1.7;
+    color: var(--earth); max-width: 560px;
+    font-weight: 300;
+  }
+
+  /* Team */
+  .team {
+    padding: 120px 80px;
+    background: var(--cream);
+  }
+  .team-header {
+    display: flex; align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 60px;
+  }
+  .team-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 4vw, 60px);
+    font-weight: 300; color: var(--dark);
+    line-height: 1.1;
+  }
+  .team-title em { font-style: italic; color: var(--accent); }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+  .team-card {
+    cursor: none;
+  }
+  .team-photo {
+    position: relative; overflow: hidden;
+    aspect-ratio: 3/4; margin-bottom: 20px;
+    background: var(--warm);
+  }
+  .team-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top;
+    transition: transform 0.6s;
+    filter: grayscale(30%);
+  }
+  .team-card:hover .team-photo img {
+    transform: scale(1.05);
+    filter: grayscale(0%);
+  }
+  .team-overlay {
+    position: absolute; inset: 0;
+    background: rgba(28,25,23,0.6);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .team-card:hover .team-overlay { opacity: 1; }
+  .team-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-style: italic;
+    color: white; text-align: center;
+    padding: 28px; line-height: 1.5;
+  }
+  .team-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400;
+    color: var(--dark); margin-bottom: 4px;
+  }
+  .team-role {
+    font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--earth);
+  }
+
+  /* Numbers */
+  .numbers-section {
+    background: var(--accent);
+    padding: 100px 80px;
+    position: relative; overflow: hidden;
+  }
+  .numbers-section::after {
+    content: '';
+    position: absolute; top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .numbers-section::before {
+    content: '';
+    position: absolute; bottom: -150px; left: -80px;
+    width: 400px; height: 400px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .numbers-tag {
+    font-size: 10px; letter-spacing: 4px;
+    text-transform: uppercase; color: rgba(255,255,255,0.65);
+    margin-bottom: 20px; display: block;
+    position: relative;
+  }
+  .numbers-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 4vw, 60px);
+    font-weight: 300; color: white;
+    line-height: 1.1; margin-bottom: 72px;
+    position: relative;
+  }
+  .numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    position: relative;
+  }
+  .number-item {
+    background: rgba(255,255,255,0.1);
+    padding: 48px 40px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: background 0.3s;
+  }
+  .number-item:hover { background: rgba(255,255,255,0.18); }
+  .number-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px; font-weight: 300;
+    color: white; line-height: 1;
+    margin-bottom: 8px;
+  }
+  .number-suffix {
+    font-size: 28px; color: rgba(255,255,255,0.6);
+  }
+  .number-label {
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* Press */
+  .press {
+    padding: 100px 80px;
+    background: var(--warm);
+    text-align: center;
+  }
+  .press-tag {
+    font-size: 10px; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--earth);
+    margin-bottom: 20px; display: block;
+  }
+  .press-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; font-weight: 300;
+    color: var(--dark); margin-bottom: 60px;
+  }
+  .press-logos {
+    display: flex; justify-content: center;
+    align-items: center; gap: 64px;
+    flex-wrap: wrap;
+  }
+  .press-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; letter-spacing: 4px;
+    color: var(--sand);
+    text-transform: uppercase;
+    transition: color 0.3s;
+    cursor: none;
+    font-style: italic;
+  }
+  .press-logo:hover { color: var(--dark); }
+  .press-quote {
+    margin-top: 72px;
+    padding: 60px;
+    background: var(--cream);
+    max-width: 780px;
+    margin-left: auto; margin-right: auto;
+    position: relative;
+  }
+  .press-quote::before {
+    content: '\201C';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 120px; font-style: italic;
+    color: var(--sand); line-height: 0;
+    position: absolute; top: 60px; left: 40px;
+    opacity: 0.4;
+  }
+  .press-quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-style: italic;
+    font-weight: 300; color: var(--dark);
+    line-height: 1.6; margin-bottom: 24px;
+    position: relative;
+  }
+  .press-quote-source {
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--earth);
+  }
+
+  /* CTA */
+  .about-cta {
+    background: var(--dark);
+    padding: 140px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .cta-tag {
+    font-size: 10px; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 24px; display: block;
+  }
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 4vw, 68px);
+    font-weight: 300; color: var(--cream);
+    line-height: 1.05; margin-bottom: 32px;
+  }
+  .cta-title em { font-style: italic; color: var(--gold); }
+  .cta-desc {
+    font-size: 15px; line-height: 1.8;
+    color: rgba(245,240,232,0.5);
+    font-weight: 300; max-width: 400px;
+    margin-bottom: 52px;
+  }
+  .cta-buttons { display: flex; gap: 20px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: white;
+    border: none; padding: 18px 44px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; cursor: none;
+    transition: all 0.3s; text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; color: var(--cream);
+    border: 1px solid rgba(245,240,232,0.25);
+    padding: 18px 44px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; cursor: none;
+    transition: all 0.3s; text-decoration: none;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  .cta-visual {
+    position: relative;
+  }
+  .cta-img-main {
+    width: 100%; aspect-ratio: 4/5;
+    object-fit: cover; display: block;
+  }
+  .cta-img-detail {
+    position: absolute;
+    bottom: -32px; left: -32px;
+    width: 48%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 6px solid var(--dark);
+  }
+
+  /* Footer */
+  footer {
+    background: var(--charcoal);
+    padding: 80px 80px 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px; margin-bottom: 60px;
+  }
+  .footer-brand .nav-logo {
+    color: var(--cream); display: block;
+    margin-bottom: 20px; font-size: 30px;
+  }
+  .footer-desc {
+    font-size: 13px; line-height: 1.8;
+    color: rgba(245,240,232,0.45); max-width: 280px;
+  }
+  .footer-social { display: flex; gap: 16px; margin-top: 28px; }
+  .social-link {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(245,240,232,0.15);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(245,240,232,0.5);
+    text-decoration: none; font-size: 14px;
+    transition: all 0.3s;
+  }
+  .social-link:hover { border-color: var(--gold); color: var(--gold); }
+  .footer-col h4 {
+    font-size: 10px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--cream);
+    margin-bottom: 24px; font-weight: 400;
+  }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 12px; }
+  .footer-links a {
+    font-size: 13px; color: rgba(245,240,232,0.45);
+    text-decoration: none; transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom {
+    border-top: 1px solid rgba(245,240,232,0.08);
+    padding-top: 32px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copyright {
+    font-size: 12px; color: rgba(245,240,232,0.25); letter-spacing: 1px;
+  }
+  .footer-payments { display: flex; gap: 10px; }
+  .payment-badge {
+    background: rgba(245,240,232,0.08);
+    color: rgba(245,240,232,0.4);
+    font-size: 10px; letter-spacing: 1px;
+    padding: 5px 10px; text-transform: uppercase;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .about-hero { padding: 0 24px 80px; }
+    .hero-scroll-hint { display: none; }
+    .story { grid-template-columns: 1fr; gap: 60px; padding: 80px 24px; }
+    .story-img-accent { right: -20px; bottom: -20px; }
+    .story-year-tag { left: -16px; }
+    .values { padding: 80px 24px; }
+    .values-grid { grid-template-columns: 1fr; }
+    .timeline { padding: 80px 24px; }
+    .team { padding: 80px 24px; }
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+    .team-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .numbers-section { padding: 80px 24px; }
+    .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+    .press { padding: 80px 24px; }
+    .press-logos { gap: 32px; }
+    .about-cta { grid-template-columns: 1fr; padding: 80px 24px; gap: 60px; }
+    footer { padding: 60px 24px 28px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Nav -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">AURA</a>
+  <ul class="nav-links">
+    <li><a href="index.html#collections">Collections</a></li>
+    <li><a href="index.html#shop">Shop</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="#">Journal</a></li>
+  </ul>
+  <div>
+    <button class="cart-btn">Cart &nbsp;0</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="about-hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Est. 2014 — Hyderabad, India</p>
+    <h1 class="hero-headline">
+      We curate<br>
+      <em>beauty</em>
+    </h1>
+    <p class="hero-sub">AURA began as a simple idea: that the objects we live with every day should be worthy of us. Twelve years later, that idea has grown into a community of makers, collectors, and quiet believers in the power of well-made things.</p>
+  </div>
+  <div class="hero-scroll-hint">Scroll to explore</div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-strip">
+  <div class="marquee-track" id="marqueeTrack">
+    <!-- JS generated -->
+  </div>
+</div>
+
+<!-- Story -->
+<section class="story">
+  <div class="story-visual reveal">
+    <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=900&q=80" alt="Our story" class="story-img-main">
+    <img src="https://images.unsplash.com/photo-1567225557594-88d73e55f2cb?w=600&q=80" alt="Ceramic detail" class="story-img-accent">
+    <div class="story-year-tag">
+      <span>2014</span>
+      <span>Founded</span>
+    </div>
+  </div>
+  <div class="story-text reveal" style="transition-delay:0.2s">
+    <span class="story-tag">Our Story</span>
+    <h2 class="story-title">A shop born from<br><em>obsession</em> with craft</h2>
+    <div class="story-body">
+      <p>It started in a small flat with a collection of ceramics too beautiful to keep to ourselves. We began photographing them, writing about them, sharing them — and quickly discovered we weren't alone in wanting objects that felt true and lasting.</p>
+      <p>AURA was founded in 2014 by two designers who believed that thoughtful commerce could coexist with genuine beauty. Not fast, not disposable — but considered, crafted, and cherished.</p>
+      <p>Today we work with 28 independent makers across 14 countries, each chosen for their commitment to materials, process, and honesty of form. Every object in our collection has a story, a person behind it, and a reason to exist.</p>
+    </div>
+    <div class="story-signature">
+      Priya & Aryan
+      <small>Co-Founders, AURA</small>
+    </div>
+  </div>
+</section>
+
+<!-- Values -->
+<section class="values">
+  <div class="values-header reveal">
+    <span class="values-tag">What We Stand For</span>
+    <h2 class="values-title">Guided by <em>three</em><br>principles</h2>
+  </div>
+  <div class="values-grid">
+    <div class="value-card reveal">
+      <div class="value-number">01</div>
+      <span class="value-icon">◈</span>
+      <div class="value-name">Honest Craft</div>
+      <p class="value-desc">We only stock objects where the making matters. No hidden plastics, no deceptive finishes. Every piece is exactly what it appears to be — and that's something we take seriously.</p>
+    </div>
+    <div class="value-card reveal" style="transition-delay:0.15s">
+      <div class="value-number">02</div>
+      <span class="value-icon">⊕</span>
+      <div class="value-name">Enduring Beauty</div>
+      <p class="value-desc">We ask one question about every piece: will this still feel right in ten years? If the answer is yes, it earns its place in our catalogue. Trend-chasing is the enemy of lasting beauty.</p>
+    </div>
+    <div class="value-card reveal" style="transition-delay:0.3s">
+      <div class="value-number">03</div>
+      <span class="value-icon">✦</span>
+      <div class="value-name">Fair Partnership</div>
+      <p class="value-desc">Our makers are not suppliers — they're collaborators. We pay fairly, share honestly, and build long-term relationships that allow artisans to do their best work without compromise.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Timeline -->
+<section class="timeline">
+  <div class="timeline-header reveal">
+    <span class="section-tag" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--earth);display:block;margin-bottom:16px;">Our Journey</span>
+    <h2 class="timeline-title">A decade of<br><em>quiet growth</em></h2>
+  </div>
+  <div class="timeline-items">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2014</div>
+      <div class="timeline-event">The first collection</div>
+      <p class="timeline-detail">AURA launches online with 12 ceramic pieces from 3 makers. Sells out in 48 hours. We knew we had something real.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2016</div>
+      <div class="timeline-event">The first physical space</div>
+      <p class="timeline-detail">We open a small studio in Hyderabad — equal parts shop, workshop, and gathering place. A space where objects can be touched, felt, and understood.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2018</div>
+      <div class="timeline-event">International makers join</div>
+      <p class="timeline-detail">Our network expands beyond India. We begin collaborating with artisans in Japan, Portugal, and Morocco — bringing new traditions into quiet conversation.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2021</div>
+      <div class="timeline-event">The Edit launches</div>
+      <p class="timeline-detail">Our weekly newsletter becomes a destination in itself — 40,000 readers who trust our eye and come for the stories behind every object we choose.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2024</div>
+      <div class="timeline-event">Ten years, and growing</div>
+      <p class="timeline-detail">We celebrate a decade with 840+ products, 28 maker partners, and a community that continues to teach us what it means to live beautifully.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Team -->
+<section class="team">
+  <div class="team-header">
+    <div>
+      <span style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--earth);display:block;margin-bottom:16px;">Our People</span>
+      <h2 class="team-title">The <em>faces</em><br>behind the curation</h2>
+    </div>
+  </div>
+  <div class="team-grid">
+    <div class="team-card reveal">
+      <div class="team-photo">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80" alt="Priya">
+        <div class="team-overlay">
+          <p class="team-quote">"Beauty is never accidental. It is the result of attention."</p>
+        </div>
+      </div>
+      <div class="team-name">Priya Sharma</div>
+      <div class="team-role">Co-Founder & Creative Director</div>
+    </div>
+    <div class="team-card reveal" style="transition-delay:0.1s">
+      <div class="team-photo">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&q=80" alt="Aryan">
+        <div class="team-overlay">
+          <p class="team-quote">"I want every object we sell to have a soul you can feel."</p>
+        </div>
+      </div>
+      <div class="team-name">Aryan Mehta</div>
+      <div class="team-role">Co-Founder & Head of Makers</div>
+    </div>
+    <div class="team-card reveal" style="transition-delay:0.2s">
+      <div class="team-photo">
+        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80" alt="Neha">
+        <div class="team-overlay">
+          <p class="team-quote">"Good curation is like editing a poem — ruthless and loving at once."</p>
+        </div>
+      </div>
+      <div class="team-name">Neha Kapoor</div>
+      <div class="team-role">Head of Buying</div>
+    </div>
+    <div class="team-card reveal" style="transition-delay:0.3s">
+      <div class="team-photo">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Rohan">
+        <div class="team-overlay">
+          <p class="team-quote">"Stories make objects real. That's what I spend my days doing."</p>
+        </div>
+      </div>
+      <div class="team-name">Rohan Das</div>
+      <div class="team-role">Head of Editorial</div>
+    </div>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers-section">
+  <span class="numbers-tag">AURA in Numbers</span>
+  <h2 class="numbers-title">A decade told<br>in figures</h2>
+  <div class="numbers-grid">
+    <div class="number-item reveal">
+      <div class="number-val"><span data-target="840">0</span></div>
+      <div class="number-label">Products</div>
+    </div>
+    <div class="number-item reveal" style="transition-delay:0.1s">
+      <div class="number-val"><span data-target="28">0</span></div>
+      <div class="number-label">Maker Partners</div>
+    </div>
+    <div class="number-item reveal" style="transition-delay:0.2s">
+      <div class="number-val"><span data-target="40">0</span><span class="number-suffix">K</span></div>
+      <div class="number-label">Newsletter Readers</div>
+    </div>
+    <div class="number-item reveal" style="transition-delay:0.3s">
+      <div class="number-val"><span data-target="14">0</span></div>
+      <div class="number-label">Countries</div>
+    </div>
+  </div>
+</section>
+
+<!-- Press -->
+<section class="press">
+  <span class="press-tag">As seen in</span>
+  <h2 class="press-title">The press agrees</h2>
+  <div class="press-logos">
+    <div class="press-logo">Wallpaper</div>
+    <div class="press-logo">Monocle</div>
+    <div class="press-logo">Kinfolk</div>
+    <div class="press-logo">Dezeen</div>
+    <div class="press-logo">The Hindu</div>
+    <div class="press-logo">Vogue Living</div>
+  </div>
+  <div class="press-quote reveal">
+    <p class="press-quote-text">One of the most thoughtfully assembled home collections available anywhere — a rare shop that genuinely understands the difference between style and substance.</p>
+    <div class="press-quote-source">Wallpaper* Magazine, 2024</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="about-cta">
+  <div class="cta-text reveal">
+    <span class="cta-tag">Ready to explore?</span>
+    <h2 class="cta-title">Surround yourself<br>with things that<br><em>mean something.</em></h2>
+    <p class="cta-desc">Browse the collection, subscribe to The Edit, or reach out directly — we love hearing from people who care about the same things we do.</p>
+    <div class="cta-buttons">
+      <a href="index.html#shop" class="btn-primary">Shop Collection</a>
+      <a href="#" class="btn-outline">The Edit</a>
+    </div>
+  </div>
+  <div class="cta-visual reveal" style="transition-delay:0.2s">
+    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=80" alt="Interior" class="cta-img-main">
+    <img src="https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?w=600&q=80" alt="Ceramic" class="cta-img-detail">
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="nav-logo">AURA</span>
+      <p class="footer-desc">A curated selection of objects for the home and everyday living. Quality, beauty, and intention in everything we offer.</p>
+      <div class="footer-social">
+        <a href="#" class="social-link">✦</a>
+        <a href="#" class="social-link">◈</a>
+        <a href="#" class="social-link">⊕</a>
+        <a href="#" class="social-link">⋄</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul class="footer-links">
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Living Room</a></li>
+        <li><a href="#">Bedroom</a></li>
+        <li><a href="#">Kitchen</a></li>
+        <li><a href="#">Sale</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul class="footer-links">
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="#">Our Philosophy</a></li>
+        <li><a href="#">Artisan Network</a></li>
+        <li><a href="#">Journal</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <ul class="footer-links">
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Shipping & Returns</a></li>
+        <li><a href="#">Care Guide</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Privacy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copyright">© 2026 AURA. All rights reserved.</span>
+    <div class="footer-payments">
+      <span class="payment-badge">Visa</span>
+      <span class="payment-badge">MC</span>
+      <span class="payment-badge">Amex</span>
+      <span class="payment-badge">PayPal</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function tick() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(tick);
+  })();
+
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Marquee
+  const phrases = ['Honest Craft', '✦', 'Enduring Beauty', '◈', 'Fair Partnership', '⊕', 'Made with Intention', '✦', 'Since 2014', '◈', 'Curated with Care', '⊕'];
+  const track = document.getElementById('marqueeTrack');
+  const doubled = [...phrases, ...phrases];
+  track.innerHTML = doubled.map(p => `<span class="marquee-item">${p}</span>`).join('');
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Timeline observer
+  const tlObs = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 120);
+        tlObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.timeline-item').forEach(el => tlObs.observe(el));
+
+  // Counter animation
+  const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('[data-target]').forEach(el => {
+          const target = +el.dataset.target;
+          let count = 0;
+          const step = target / 60;
+          const t = setInterval(() => {
+            count = Math.min(count + step, target);
+            el.textContent = Math.floor(count);
+            if (count >= target) clearInterval(t);
+          }, 25);
+        });
+        counterObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  const numSection = document.querySelector('.numbers-section');
+  if (numSection) counterObs.observe(numSection);
+</script>
+</body>
+</html>
